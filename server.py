@@ -21,7 +21,7 @@ def get_valid_filename(s):
 
 def save_raw_data(date, raw_data, filename):
     with open("./data/raw/data.txt", 'a') as f:
-        f.write(date)
+        f.write(str(date))
         f.write(raw_data)
 
 def process_data(raw_data: str):
