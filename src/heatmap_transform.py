@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.cm import ScalarMappable
 from matplotlib.colors import Normalize
 from scipy.interpolate import interp2d
+import re
 
 NORMALIZATION = Normalize(15, 80)
 
@@ -17,17 +18,25 @@ data = np.array([
     [24.25, 24.75, 25.75, 26.50, 28.00, 28.00, 29.25, 28.25]
 ])
 
-x = np.arange(0, 8)
-y = np.arange(0, 8)
-f = interp2d(x, y, data, kind='linear')
+def get_valid_filename(s):
+    s = str(s).strip().replace(' ', '_')
+    return re.sub(r'(?u)[^-\w.]', '', s)
 
-x_interpolated = np.linspace(0, 8, 128)
-y_interpolated = np.linspace(0, 8, 128)
-z_interpolated = f(x_interpolated, y_interpolated)
-plt.axis('off')
-fig = plt.imshow(z_interpolated,
-                 interpolation='none', cmap='plasma',
-                 norm=NORMALIZATION)
+def save_heatmap(data, name):
+    x = np.arange(0, 8)
+    y = np.arange(0, 8)
+    f = interp2d(x, y, data, kind='linear')
 
-plt.colorbar(ScalarMappable(norm=NORMALIZATION, cmap='plasma'))
-plt.show()
+    x_interpolated = np.linspace(0, 8, 128)
+    y_interpolated = np.linspace(0, 8, 128)
+    z_interpolated = f(x_interpolated, y_interpolated)
+    plt.axis('off')
+    fig = plt.imshow(z_interpolated,
+                     interpolation='none', cmap='plasma',
+                     norm=NORMALIZATION)
+
+    plt.colorbar(ScalarMappable(norm=NORMALIZATION, cmap='plasma'))
+    
+    valid_name = get_valid_filename(name)
+    plt.savefig('data/processed/%s.png' % valid_name)
+    plt.clf()
