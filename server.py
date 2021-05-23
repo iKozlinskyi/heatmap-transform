@@ -6,8 +6,8 @@ import numpy as np
 import re
 from datetime import datetime
 
-hostName = "localhost"
-serverPort = 8080
+hostName = "91.219.60.147"
+serverPort = 8081
 
 
 def exp_data_to_float_arr(exp_data_arr):
