@@ -20,7 +20,7 @@ def get_valid_filename(s):
     return re.sub(r'(?u)[^-\w.]', '', s)
 
 def save_raw_data(date, raw_data, filename):
-    with open("./data/raw/data.txt" % filename, 'a') as f:
+    with open("./data/raw/data.txt", 'a') as f:
         f.write(date)
         f.write(raw_data)
 
