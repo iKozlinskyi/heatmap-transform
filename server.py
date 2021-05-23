@@ -22,7 +22,7 @@ def get_valid_filename(s):
 def save_raw_data(date, raw_data, filename):
     with open("./data/raw/data.txt", 'a') as f:
         f.write(str(date))
-        f.write(raw_data)
+        f.write(raw_data + "\n")
 
 def process_data(raw_data: str):
     raw_data = "\n".join(textwrap.wrap(raw_data, 48))
