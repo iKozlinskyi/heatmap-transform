@@ -5,13 +5,14 @@ from src import heatmap_transform
 import numpy as np
 import re
 from datetime import datetime
+import textwrap
 
 hostName = "91.219.60.147"
 serverPort = 8080
 
 
 def exp_data_to_float_arr(exp_data_arr):
-    res = [x[:-1].split(",") for x in exp_data_arr]
+    res = [x.split(",") for x in exp_data_arr]
     return np.float64(res)
 
 def get_valid_filename(s):
@@ -23,13 +24,14 @@ def save_raw_data(raw_data, filename):
         f.write(raw_data)
 
 def process_data(raw_data: str):
+    raw_data = "\n".join(textwrap.wrap(raw_data, 64))
+    
     lines = np.array(raw_data.strip().split("\n"))
-    group_by_experiment = lines.reshape(int(len(lines) / 9), 9)
-    save_raw_data(raw_data, get_valid_filename(datetime.now()))
+    group_by_experiment = lines.reshape(int(len(lines) / 8), 8)
+    filename = get_valid_filename(datetime.now())
+    save_raw_data(raw_data, filename)
     for experiment in group_by_experiment:
-        exp_timestamp = experiment[0]
-        exp_data = exp_data_to_float_arr(experiment[1:])
-        filename = get_valid_filename(exp_timestamp)
+        exp_data = exp_data_to_float_arr(experiment)
         heatmap_transform.save_heatmap(exp_data, filename)
 
 
