@@ -12,7 +12,7 @@ serverPort = 8080
 
 
 def exp_data_to_float_arr(exp_data_arr):
-    res = [x.split(",") for x in exp_data_arr]
+    res = [x[:-1].split(",") for x in exp_data_arr]
     return np.float64(res)
 
 def get_valid_filename(s):
@@ -24,7 +24,7 @@ def save_raw_data(raw_data, filename):
         f.write(raw_data)
 
 def process_data(raw_data: str):
-    raw_data = "\n".join(textwrap.wrap(raw_data, 64))
+    raw_data = "\n".join(textwrap.wrap(raw_data, 48))
     
     lines = np.array(raw_data.strip().split("\n"))
     group_by_experiment = lines.reshape(int(len(lines) / 8), 8)
